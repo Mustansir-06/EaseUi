@@ -38,7 +38,7 @@ const Navbar = () => {
         >
           Components
         </li>
-        <li className="cursor-pointer hover:text-black">About</li>
+        <li className="cursor-pointer hover:text-black" onClick={() => navigate("about")}>About</li>
         <li className="cursor-pointer hover:text-black">Templates</li>
         {mode === "dark" && (
           <li
