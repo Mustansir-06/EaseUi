@@ -49,27 +49,22 @@ const carouselVariant = cva("relative", {
   },
 });
 
-const carouselAnimation = cva(
-  "flex ease-in-out",
-  {
-    variants: {
-      animation: {
-        none: "transition-none",
-        fast: "transition-transform duration-300",
-        normal: "transition-transform duration-500",
-        slow: "transition-transform duration-1000",
-        slower:
-          "transition-transform duration-[1500ms]",
-        verySlow:
-          "transition-transform duration-[2500ms]",
-      },
+const carouselAnimation = cva("flex ease-in-out", {
+  variants: {
+    animation: {
+      none: "transition-none",
+      fast: "transition-transform duration-300",
+      normal: "transition-transform duration-500",
+      slow: "transition-transform duration-1000",
+      slower: "transition-transform duration-[1500ms]",
+      verySlow: "transition-transform duration-[2500ms]",
     },
+  },
 
-    defaultVariants: {
-      animation: "normal",
-    },
-  }
-);
+  defaultVariants: {
+    animation: "normal",
+  },
+});
 
 interface CarouselProps
   extends React.HTMLAttributes<HTMLDivElement>,
@@ -84,13 +79,16 @@ const Carousel = React.forwardRef<
   (
     {
       className,
-      orientation = "horizontal",
+      orientation: orientationProp,
       size = "full",
       children,
       ...props
     },
     ref
   ) => {
+    const orientation =
+      orientationProp ?? "horizontal";
+
     const [curr, setCurr] = useState(0);
     const [totalItems, setTotalItems] = useState(0);
     const [itemsPerView, setItemsPerView] = useState(1);
@@ -200,7 +198,9 @@ const CarouselContent = React.forwardRef<
       (totalItems / itemsPerView) * 100;
 
     const itemSize =
-      100 / totalItems;
+      totalItems > 0
+        ? 100 / totalItems
+        : 100;
 
     const translate =
       totalItems > 0
@@ -255,8 +255,7 @@ const CarouselContent = React.forwardRef<
                       style?: React.CSSProperties;
                     }).style,
 
-                    ...(orientation ===
-                    "horizontal"
+                    ...(orientation === "horizontal"
                       ? {
                           width: `${itemSize}%`,
                           minWidth: `${itemSize}%`,
@@ -276,8 +275,7 @@ const CarouselContent = React.forwardRef<
   }
 );
 
-CarouselContent.displayName =
-  "CarouselContent";
+CarouselContent.displayName = "CarouselContent";
 
 interface CarouselItemProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -441,8 +439,7 @@ const CarouselNext = React.forwardRef<
   }
 );
 
-CarouselNext.displayName =
-  "CarouselNext";
+CarouselNext.displayName = "CarouselNext";
 
 export {
   Carousel,

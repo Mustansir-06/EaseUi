@@ -8,10 +8,12 @@ const tooltipVariant = cva(
   {
     variants: {
       variant: {
-        light: "bg-white text-gray-900 border border-gray-200",
+        light:
+          "bg-white text-gray-900 border border-gray-200",
         dark: "bg-gray-900 text-white",
         primary: "bg-indigo-600 text-white",
-        secondary: "bg-gray-100 text-gray-900",
+        secondary:
+          "bg-gray-100 text-gray-900",
       },
 
       size: {
@@ -29,7 +31,10 @@ const tooltipVariant = cva(
 );
 
 interface TooltipProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends Omit<
+      React.HTMLAttributes<HTMLDivElement>,
+      "content"
+    >,
     VariantProps<typeof tooltipVariant> {
   content: React.ReactNode;
 
@@ -42,7 +47,10 @@ interface TooltipProps
   disabled?: boolean;
 }
 
-const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
+const Tooltip = React.forwardRef<
+  HTMLDivElement,
+  TooltipProps
+>(
   (
     {
       className,
@@ -58,11 +66,16 @@ const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     },
     ref
   ) => {
-    const [showTooltip, setShowTooltip] = useState(false);
+    const [showTooltip, setShowTooltip] =
+      useState(false);
 
-    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const timeoutRef =
+      useRef<ReturnType<typeof setTimeout> | null>(
+        null
+      );
 
-    const tooltipRef = useRef<HTMLDivElement | null>(null);
+    const tooltipRef =
+      useRef<HTMLDivElement | null>(null);
 
     const mouseenter = () => {
       if (disabled) return;
@@ -106,12 +119,11 @@ const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
 
     const positionClasses = {
       top: "absolute bottom-full left-1/2 -translate-x-1/2 mb-2",
-
-      bottom: "absolute top-full left-1/2 -translate-x-1/2 mt-2",
-
+      bottom:
+        "absolute top-full left-1/2 -translate-x-1/2 mt-2",
       left: "absolute right-full top-1/2 -translate-y-1/2 mr-2",
-
-      right: "absolute left-full top-1/2 -translate-y-1/2 ml-2",
+      right:
+        "absolute left-full top-1/2 -translate-y-1/2 ml-2",
     };
 
     return (
@@ -127,10 +139,12 @@ const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
         {showTooltip && !disabled && (
           <div
             ref={tooltipRef}
-            className={`${positionClasses[position]} ${tooltipVariant({
-              variant,
-              size,
-            })} ${className || ""}`}
+            className={`${positionClasses[position]} ${tooltipVariant(
+              {
+                variant,
+                size,
+              }
+            )} ${className || ""}`}
           >
             {content}
           </div>
@@ -142,4 +156,7 @@ const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
 
 Tooltip.displayName = "Tooltip";
 
-export { Tooltip, tooltipVariant };
+export {
+  Tooltip,
+  tooltipVariant,
+};
